@@ -169,7 +169,7 @@ public class EscPosXprinterModule extends ReactContextBaseJavaModule {
           if (str.equals(null)||str.equals("")){
           }else {
             //initialize the printer
-//                            list.add( DataForSendToPrinterPos58.initializePrinter());
+            //list.add( DataForSendToPrinterPos58.initializePrinter());
             list.add(DataForSendToPrinterPos80.initializePrinter());
             byte[] data1= StringUtils.strTobytes(str);
             //   list.add(PrinterCommands.ESC_ALIGN_CENTER);
@@ -185,6 +185,43 @@ public class EscPosXprinterModule extends ReactContextBaseJavaModule {
             // } catch (Exception e) {
             //   e.printStackTrace();
             // }
+            return list;
+          }
+          return null;
+        }
+      }
+    );
+  }
+
+  @ReactMethod
+  public void pushFlashImage(Integer index){
+
+    binder.writeDataByYouself(
+      new UiExecute() {
+        @Override
+        public void onsucess() {
+          Log.v(NAME, "pushFlashImage onsucess");
+        }
+
+        @Override
+        public void onfailed() {
+          Log.v(NAME, "pushFlashImage onfailed");
+        }
+      }, new ProcessData() {
+        @Override
+        public List<byte[]> processDataBeforeSend() {
+
+          List<byte[]> list=new ArrayList<byte[]>();
+          if (index==0){
+          }else {
+            //initialize the printer
+            //list.add( DataForSendToPrinterPos58.initializePrinter());
+            list.add(DataForSendToPrinterPos80.initializePrinter());
+            //align center data
+            list.add(PrinterCommands.ESC_ALIGN_CENTER);
+            //print flash image
+            list.add(DataForSendToPrinterPos80.printBmpInFLASH(index, 0));
+
             return list;
           }
           return null;
