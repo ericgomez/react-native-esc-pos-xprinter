@@ -42,14 +42,12 @@ import java.util.List;
 import static android.content.Context.BIND_AUTO_CREATE;
 
 public class EscPosXprinterModule extends ReactContextBaseJavaModule {
-  public static final String NAME = "EscPosXprinter";
-
-  private String LOG_TAG = "RNXNetprinter";
+  public static String DISCONNECT="com.posconsend.net.disconnetct";
+  public static final String NAME = "RNXprinter";
   private ReactApplicationContext context;
 
   private byte[] mBuffer = new byte[0];
 
-  // Net
   public static IMyBinder binder;
   public static boolean ISCONNECT;
 
@@ -74,35 +72,49 @@ public class EscPosXprinterModule extends ReactContextBaseJavaModule {
     this.context = reactContext;
 
     Intent intent=new Intent(this.context, PosprinterService.class);
+    intent.putExtra("isconnect",true); // add
     this.context.bindService(intent, conn, BIND_AUTO_CREATE);
-    Log.v(LOG_TAG, "RNXNetprinter alloc");
+    Log.v(NAME, "RNXNetprinter alloc");
   }
 
   @Override
   public String getName() {
-    return "RNXNetprinter";
+    return NAME;
   }
 
   @ReactMethod
-  public void connectPrinter(String address, final Promise promise){
-    binder.connectNetPort(address,9100, new UiExecute() {
+  public void connectPrinter(String bleAdrress, final Promise promise){
+    binder.connectBtPort(bleAdrress, new UiExecute() {
       @Override
       public void onsucess() {
 
         ISCONNECT=true;
+        promise.resolve(true);
         //in this ,you could call acceptdatafromprinter(),when disconnect ,will execute onfailed();
-        binder.acceptdatafromprinter(new UiExecute() {
-          @Override
-          public void onsucess() {
-            promise.resolve(true);
-          }
+        //    binder.write(DataForSendToPrinterPos80.openOrCloseAutoReturnPrintState(0x1f), new UiExecute() {
+        //         @Override
+        //         public void onsucess() {
+        //             binder.acceptdatafromprinter(new UiExecute() {
+        //                 @Override
+        //                 public void onsucess() {
+        //                     promise.resolve(true);
+        //                 }
 
-          @Override
-          public void onfailed() {
-            ISCONNECT=false;
-            promise.reject("-105", "Device address not exist.");
-          }
-        });
+        //                 @Override
+        //                 public void onfailed() {
+        //                     ISCONNECT=false;
+        //                     promise.reject("-105", "Device address not exist.");
+        //                 }
+        //             });
+        //         }
+
+        //         @Override
+        //         public void onfailed() {
+        //             ISCONNECT=false;
+        //             promise.reject("-105", "Device address not exist.");
+        //         }
+        //     });
+
       }
 
       @Override
@@ -114,19 +126,38 @@ public class EscPosXprinterModule extends ReactContextBaseJavaModule {
   }
 
   @ReactMethod
-  public void pushText(String text, final int size){
-
-    final String tempText = text;
-    binder.writeDataByYouself(
-      new UiExecute() {
+  public void disconnectPrinter(final Promise promise){
+    if (ISCONNECT){
+      binder.disconnectCurrentPort(new UiExecute() {
         @Override
         public void onsucess() {
-          Log.v(LOG_TAG, "pushText onsucess");
+          promise.resolve(true);
         }
 
         @Override
         public void onfailed() {
-          Log.v(LOG_TAG, "pushText onfailed");
+          promise.reject("-105", "Device not connect.");
+        }
+      });
+    }else {
+      promise.reject("-105", "Device not connect.");
+    }
+  }
+
+  @ReactMethod
+  public void pushText(final Promise promise){
+
+    //final String tempText = text;
+    binder.writeDataByYouself(
+      new UiExecute() {
+        @Override
+        public void onsucess() {
+          Log.v(NAME, "pushText onsucess");
+        }
+
+        @Override
+        public void onfailed() {
+          Log.v(NAME, "pushText onfailed");
         }
       }, new ProcessData() {
         @Override
@@ -134,26 +165,35 @@ public class EscPosXprinterModule extends ReactContextBaseJavaModule {
 
           List<byte[]> list=new ArrayList<byte[]>();
           //creat a text ,and make it to byte[],
-          String str=tempText;
+          String str="Alguna vez has intentado escribir una canción romántica Ya sea de amor, desamor, en español o en inglés. Parece simple, pero no lo es. Debes convertirte realmente en un torbellino de sentimientos encontrados para poder inspirarte y así formar al menos un verso. No es fácil escribir letras de canciones de amor o sobre el romance. Afortunadamente, no necesitamos escribirlas para poder disfrutar de lo que ya existe.";
           if (str.equals(null)||str.equals("")){
           }else {
             //initialize the printer
 //                            list.add( DataForSendToPrinterPos58.initializePrinter());
             list.add(DataForSendToPrinterPos80.initializePrinter());
             byte[] data1= StringUtils.strTobytes(str);
-            list.add(PrinterCommands.ESC_ALIGN_CENTER);
-            list.add(DataForSendToPrinterPos80.selectCharacterSize(size));
+            //   list.add(PrinterCommands.ESC_ALIGN_CENTER);
+            //   list.add(DataForSendToPrinterPos80.selectCharacterSize(size));
             list.add(data1);
             //should add the command of print and feed line,because print only when one line is complete, not one line, no print
             list.add(DataForSendToPrinterPos80.printAndFeedLine());
+            //cut pager
+            list.add(DataForSendToPrinterPos80.selectCutPagerModerAndCutPager(66,1));
+
+            try {
+              Thread.sleep(8000);
+            } catch (Exception e) {
+              e.printStackTrace();
+            }
+            promise.resolve(true);
             return list;
           }
+          promise.resolve(true);
           return null;
         }
       }
     );
   }
-
 
   private Bitmap b1;//grey-scale bitmap
   private  Bitmap b2;//compress bitmap
@@ -219,16 +259,16 @@ public class EscPosXprinterModule extends ReactContextBaseJavaModule {
     return resizedBitmap;
   }
 
-  private void printpicCode(final Bitmap printBmp){
+  private void printPicCode(final Bitmap printBmp){
     binder.writeDataByYouself(new UiExecute() {
       @Override
       public void onsucess() {
-        Log.v(LOG_TAG, "printpicCode onsucess");
+        Log.v(NAME, "printPicCode onsucess");
       }
 
       @Override
       public void onfailed() {
-        Log.v(LOG_TAG, "printpicCode onfailed");
+        Log.v(NAME, "printPicCode onfailed");
       }
     }, new ProcessData() {
       @Override
@@ -244,13 +284,13 @@ public class EscPosXprinterModule extends ReactContextBaseJavaModule {
     });
   }
 
-  public Handler handler=new Handler(){
+  public Handler handler = new Handler() {
     @Override
     public void handleMessage(Message msg) {
       super.handleMessage(msg);
       switch (msg.what){
         case 2:
-          printpicCode(b2);
+          printPicCode(b2);
           break;
       }
 
@@ -324,12 +364,12 @@ public class EscPosXprinterModule extends ReactContextBaseJavaModule {
     binder.writeDataByYouself(new UiExecute() {
       @Override
       public void onsucess() {
-        Log.v(LOG_TAG, "pushCutPaper onsucess");
+        Log.v(NAME, "pushCutPaper onsucess");
       }
 
       @Override
       public void onfailed() {
-        Log.v(LOG_TAG, "pushCutPaper onfailed");
+        Log.v(NAME, "pushCutPaper onfailed");
       }
     }, new ProcessData() {
       @Override
