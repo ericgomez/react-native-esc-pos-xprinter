@@ -145,9 +145,9 @@ public class EscPosXprinterModule extends ReactContextBaseJavaModule {
   }
 
   @ReactMethod
-  public void pushText(final Promise promise){
+  public void pushText(String text, final int size){
 
-    //final String tempText = text;
+    final String tempText = text;
     binder.writeDataByYouself(
       new UiExecute() {
         @Override
@@ -165,7 +165,7 @@ public class EscPosXprinterModule extends ReactContextBaseJavaModule {
 
           List<byte[]> list=new ArrayList<byte[]>();
           //creat a text ,and make it to byte[],
-          String str="Alguna vez has intentado escribir una canción romántica Ya sea de amor, desamor, en español o en inglés. Parece simple, pero no lo es. Debes convertirte realmente en un torbellino de sentimientos encontrados para poder inspirarte y así formar al menos un verso. No es fácil escribir letras de canciones de amor o sobre el romance. Afortunadamente, no necesitamos escribirlas para poder disfrutar de lo que ya existe.";
+          String str=tempText;
           if (str.equals(null)||str.equals("")){
           }else {
             //initialize the printer
@@ -173,22 +173,20 @@ public class EscPosXprinterModule extends ReactContextBaseJavaModule {
             list.add(DataForSendToPrinterPos80.initializePrinter());
             byte[] data1= StringUtils.strTobytes(str);
             //   list.add(PrinterCommands.ESC_ALIGN_CENTER);
-            //   list.add(DataForSendToPrinterPos80.selectCharacterSize(size));
+            list.add(DataForSendToPrinterPos80.selectCharacterSize(size));
             list.add(data1);
             //should add the command of print and feed line,because print only when one line is complete, not one line, no print
             list.add(DataForSendToPrinterPos80.printAndFeedLine());
             //cut pager
             list.add(DataForSendToPrinterPos80.selectCutPagerModerAndCutPager(66,1));
 
-            try {
-              Thread.sleep(8000);
-            } catch (Exception e) {
-              e.printStackTrace();
-            }
-            promise.resolve(true);
+            // try {
+            //   Thread.sleep(8000);
+            // } catch (Exception e) {
+            //   e.printStackTrace();
+            // }
             return list;
           }
-          promise.resolve(true);
           return null;
         }
       }
