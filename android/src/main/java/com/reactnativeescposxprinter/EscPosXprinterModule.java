@@ -1,11 +1,16 @@
 package com.reactnativeescposxprinter;
 
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
 import android.content.ComponentName;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.graphics.Matrix;
 import android.os.IBinder;
 import android.util.Log;
+
+import java.util.Iterator;
 import java.util.Set;
 
 import android.graphics.Bitmap;
@@ -14,6 +19,13 @@ import android.os.Message;
 
 import android.graphics.BitmapFactory;
 import android.util.Base64;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.ListView;
 
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Promise;
@@ -54,6 +66,10 @@ public class EscPosXprinterModule extends ReactContextBaseJavaModule {
   public static IMyBinder binder;
   public static boolean ISCONNECT;
 
+  // Bluetooth
+  BluetoothAdapter bluetoothAdapter;
+  private Set<BluetoothDevice> mPairedDevices;
+
   //bindService connection
   ServiceConnection conn= new ServiceConnection() {
     @Override
@@ -83,6 +99,28 @@ public class EscPosXprinterModule extends ReactContextBaseJavaModule {
   @Override
   public String getName() {
     return NAME;
+  }
+
+  @ReactMethod
+  public void getDeviceList(Promise promise){
+    bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+    if (bluetoothAdapter == null) {
+      promise.reject("-100", "Not bluetooth adapter");
+    }
+    else if (bluetoothAdapter.isEnabled()) {
+      mPairedDevices = bluetoothAdapter.getBondedDevices();
+      WritableArray pairedDeviceList = Arguments.createArray();
+      for (BluetoothDevice device : mPairedDevices) {
+        WritableMap deviceMap = Arguments.createMap();
+        deviceMap.putString("name", device.getName());
+        deviceMap.putString("address", device.getAddress());
+        pairedDeviceList.pushMap(deviceMap);
+      }
+      promise.resolve(pairedDeviceList);
+    }
+    else {
+      promise.reject("-103", "BluetoothAdapter not open...");
+    }
   }
 
   @ReactMethod
@@ -260,8 +298,6 @@ public class EscPosXprinterModule extends ReactContextBaseJavaModule {
             message.what=2;
             handler.handleMessage(message);
           }
-
-
         }
       });
     }
