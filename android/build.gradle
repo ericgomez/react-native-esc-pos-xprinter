@@ -57,4 +57,5 @@ dependencies {
     //noinspection GradleDynamicVersion
     implementation "com.facebook.react:react-native:+"
     implementation files('libs/posprinterconnectandsendsdk.jar')  // From node_modules
+    implementation fileTree(dir: "libs", include: ["*.aar"])
 }

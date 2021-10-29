@@ -28,6 +28,9 @@ import net.posprinter.posprinterface.IMyBinder;
 import com.reactnativeescposxprinter.utils.PrinterCommands;
 import com.reactnativeescposxprinter.utils.StringUtils;
 
+import com.zxy.tiny.Tiny;
+import com.zxy.tiny.callback.BitmapCallback;
+
 import net.posprinter.posprinterface.ProcessData;
 import net.posprinter.posprinterface.UiExecute;
 import net.posprinter.service.PosprinterService;
@@ -233,8 +236,8 @@ public class EscPosXprinterModule extends ReactContextBaseJavaModule {
   private Bitmap b1;//grey-scale bitmap
   private  Bitmap b2;//compress bitmap
 
-  /*@ReactMethod
-  private void printImage(String base64img, final int width){
+  @ReactMethod
+  private void pushImage(String base64img, final int width){
     byte [] bytes = Base64.decode(base64img, Base64.DEFAULT);
     Bitmap b = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
 
@@ -262,11 +265,9 @@ public class EscPosXprinterModule extends ReactContextBaseJavaModule {
         }
       });
     }
-  }*/
+  }
 
-  public static Bitmap resizeImage(Bitmap bitmap, int w,boolean ischecked)
-  {
-
+  public static Bitmap resizeImage(Bitmap bitmap, int w,boolean ischecked) {
     Bitmap BitmapOrg = bitmap;
     Bitmap resizedBitmap = null;
     int width = BitmapOrg.getWidth();
@@ -328,7 +329,6 @@ public class EscPosXprinterModule extends ReactContextBaseJavaModule {
           printPicCode(b2);
           break;
       }
-
     }
   };
 
@@ -339,7 +339,6 @@ public class EscPosXprinterModule extends ReactContextBaseJavaModule {
     int[] pixels = new int[width * height];
 
     img.getPixels(pixels, 0, width, 0, 0, width, height);
-
 
     //The arithmetic average of a grayscale image; a threshold
     double redSum=0,greenSum=0,blueSun=0;
@@ -353,12 +352,9 @@ public class EscPosXprinterModule extends ReactContextBaseJavaModule {
         int green = ((grey & 0x0000FF00) >> 8);
         int blue = (grey & 0x000000FF);
 
-
-
         redSum+=red;
         greenSum+=green;
         blueSun+=blue;
-
 
       }
     }
@@ -374,7 +370,6 @@ public class EscPosXprinterModule extends ReactContextBaseJavaModule {
         int green = ((grey & 0x0000FF00) >> 8);
         int blue = (grey & 0x000000FF);
 
-
         if (red>=m) {
           red=green=blue=255;
         }else{
@@ -383,13 +378,10 @@ public class EscPosXprinterModule extends ReactContextBaseJavaModule {
         grey = alpha1 | (red << 16) | (green << 8) | blue;
         pixels[width*i+j]=grey;
 
-
       }
     }
     Bitmap mBitmap=Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565);
     mBitmap.setPixels(pixels, 0, width, 0, 0, width, height);
-
-
 
     return mBitmap;
   }
