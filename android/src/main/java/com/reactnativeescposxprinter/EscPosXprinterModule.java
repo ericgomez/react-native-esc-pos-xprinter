@@ -124,8 +124,8 @@ public class EscPosXprinterModule extends ReactContextBaseJavaModule {
   }
 
   @ReactMethod
-  public void connectPrinter(String bleAdrress, final Promise promise){
-    binder.connectBtPort(bleAdrress, new UiExecute() {
+  public void connectPrinter(String bleAddress, final Promise promise){
+    binder.connectBtPort(bleAddress, new UiExecute() {
       @Override
       public void onsucess() {
 
@@ -161,7 +161,7 @@ public class EscPosXprinterModule extends ReactContextBaseJavaModule {
       @Override
       public void onfailed() {
         ISCONNECT=false;
-        promise.reject("-105", "Device address not exist.");
+        promise.reject(false);
       }
     });
   }
@@ -177,11 +177,11 @@ public class EscPosXprinterModule extends ReactContextBaseJavaModule {
 
         @Override
         public void onfailed() {
-          promise.reject("-105", "Device not connect.");
+          promise.reject(false);
         }
       });
     }else {
-      promise.reject("-105", "Device not connect.");
+      promise.reject(false);
     }
   }
 

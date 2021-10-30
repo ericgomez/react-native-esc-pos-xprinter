@@ -6,8 +6,8 @@ const LINKING_ERROR =
   '- You rebuilt the app after installing the package\n' +
   '- You are not using Expo managed workflow\n';
 
-const EscPosXprinter = NativeModules.EscPosXprinter
-  ? NativeModules.EscPosXprinter
+const RNXprinter = NativeModules.RNXprinter
+  ? NativeModules.RNXprinter
   : new Proxy(
       {},
       {
@@ -17,6 +17,30 @@ const EscPosXprinter = NativeModules.EscPosXprinter
       }
     );
 
-export function multiply(a: number, b: number): Promise<number> {
-  return EscPosXprinter.multiply(a, b);
+export function getDeviceList(): Promise<any> {
+  return RNXprinter.getDeviceList();
+}
+
+export function connectPrinter(bleAddress: string): Promise<boolean> {
+  return RNXprinter.connectPrinter(bleAddress);
+}
+
+export function disconnectPrinter(): Promise<boolean> {
+  return RNXprinter.disconnectPrinter();
+}
+
+export function pushText(text: string, size: number): void {
+  return RNXprinter.pushText(text, size);
+}
+
+export function pushFlashImage(index: number): void {
+  return RNXprinter.pushFlashImage(index);
+}
+
+export function pushImage(base64img: string, width: number): void {
+  return RNXprinter.pushImage(base64img, width);
+}
+
+export function pushCutPaper(): void {
+  return RNXprinter.pushCutPaper();
 }
