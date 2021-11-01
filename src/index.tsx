@@ -17,30 +17,4 @@ const RNXprinter = NativeModules.RNXprinter
       }
     );
 
-export function getDeviceList(): Promise<any> {
-  return RNXprinter.getDeviceList();
-}
-
-export function connectPrinter(bleAddress: string): Promise<any> {
-  return RNXprinter.connectPrinter(bleAddress);
-}
-
-export function disconnectPrinter(): Promise<any> {
-  return RNXprinter.disconnectPrinter();
-}
-
-export function pushText(text: string, size: number): void {
-  return RNXprinter.pushText(text, size);
-}
-
-export function pushFlashImage(index: number): void {
-  return RNXprinter.pushFlashImage(index);
-}
-
-export function pushImage(base64img: string, width: number): void {
-  return RNXprinter.pushImage(base64img, width);
-}
-
-export function pushCutPaper(): void {
-  return RNXprinter.pushCutPaper();
-}
+export default RNXprinter;
