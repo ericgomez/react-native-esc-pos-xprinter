@@ -21,11 +21,11 @@ export function getDeviceList(): Promise<any> {
   return RNXprinter.getDeviceList();
 }
 
-export function connectPrinter(bleAddress: string): Promise<boolean> {
+export function connectPrinter(bleAddress: string): Promise<any> {
   return RNXprinter.connectPrinter(bleAddress);
 }
 
-export function disconnectPrinter(): Promise<boolean> {
+export function disconnectPrinter(): Promise<any> {
   return RNXprinter.disconnectPrinter();
 }
 

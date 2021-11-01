@@ -1,6 +1,6 @@
 {
   "name": "react-native-esc-pos-xprinter",
-  "version": "0.1.4",
+  "version": "0.2.1",
   "description": "This is an android xprinter driver.",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
@@ -33,8 +33,12 @@
   },
   "keywords": [
     "react-native",
-    "ios",
-    "android"
+    "android",
+    "POS",
+    "xprinter",
+    "bluetooth",
+    "printer"
+
   ],
   "repository": "https://github.com/ericgomez/react-native-esc-pos-xprinter",
   "author": "Eric Gomez <eric.gomez.sanchez@gmail.com> (https://github.com/ericgomez)",

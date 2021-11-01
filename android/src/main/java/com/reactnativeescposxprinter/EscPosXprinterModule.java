@@ -161,7 +161,7 @@ public class EscPosXprinterModule extends ReactContextBaseJavaModule {
       @Override
       public void onfailed() {
         ISCONNECT=false;
-        promise.reject(false);
+        promise.reject("-105", "Device address not exist.");
       }
     });
   }
@@ -177,11 +177,11 @@ public class EscPosXprinterModule extends ReactContextBaseJavaModule {
 
         @Override
         public void onfailed() {
-          promise.reject(false);
+          promise.reject("-105", "Device not connect.");
         }
       });
     }else {
-      promise.reject(false);
+      promise.reject("-105", "Device not connect.");
     }
   }
 
@@ -219,7 +219,7 @@ public class EscPosXprinterModule extends ReactContextBaseJavaModule {
             //should add the command of print and feed line,because print only when one line is complete, not one line, no print
             list.add(DataForSendToPrinterPos80.printAndFeedLine());
             //cut pager
-            list.add(DataForSendToPrinterPos80.selectCutPagerModerAndCutPager(66,1));
+            // list.add(DataForSendToPrinterPos80.selectCutPagerModerAndCutPager(66,1));
 
             // try {
             //   Thread.sleep(8000);

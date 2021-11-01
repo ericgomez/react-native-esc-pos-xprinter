@@ -1,6 +1,6 @@
 # react-native-esc-pos-xprinter
 
-This is an android xprinter driver.
+This is an Android Xprinter SDK driver.
 
 ## Installation
 
@@ -58,6 +58,14 @@ RNXprinter.pushImage(base64Image, 200);
 RNXprinter.pushCutPaper();
 ```
 
+### Disconnect printer
+After connecting to your printer, you can disconnect the printer if it is not in use.
+
+```js
+// Disconnect printer
+await RNXprinter.disconnectPrinter();
+```
+
 ## Contributing
 
 See the [contributing guide](CONTRIBUTING.md) to learn how to contribute to the repository and the development workflow.
@@ -69,6 +77,7 @@ See the [contributing guide](CONTRIBUTING.md) to learn how to contribute to the 
 - [ ] Test coverage
 - [x] Printer select panel
 - [x] Download image to printer
+- [x] Bluetooth support
 - [ ] USB support
 
 ## License
