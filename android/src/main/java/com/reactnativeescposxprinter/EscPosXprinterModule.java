@@ -8,6 +8,7 @@ import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.graphics.Matrix;
 import android.os.IBinder;
+import android.os.Looper;
 import android.util.Log;
 
 import java.util.Iterator;
@@ -356,14 +357,12 @@ public class EscPosXprinterModule extends ReactContextBaseJavaModule {
     });
   }
 
-  public Handler handler = new Handler() {
+  public Handler handler = new Handler(Looper.getMainLooper()) {
     @Override
     public void handleMessage(Message msg) {
       super.handleMessage(msg);
-      switch (msg.what){
-        case 2:
-          printPicCode(b2);
-          break;
+      if (msg.what == 2) {
+        printPicCode(b2);
       }
     }
   };

@@ -32,7 +32,7 @@ RNXprinter.pushText("Hello World!!!", 0);
 RNXprinter.pushCutPaper();
 ```
 
-### Push image to buffer
+### Print image from buffer
 Thermal printer is a kind of high speed printer, so we need push all things to the buffer first. To add the image to the printer use:
 [Printer TEST V3.0C](https://www.youtube.com/watch?v=rbho0L0VqMQ&list=WL)
 ```js
