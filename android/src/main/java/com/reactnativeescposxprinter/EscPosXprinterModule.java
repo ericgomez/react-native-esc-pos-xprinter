@@ -290,9 +290,9 @@ public class EscPosXprinterModule extends ReactContextBaseJavaModule {
       Tiny.BitmapCompressOptions options = new Tiny.BitmapCompressOptions();
       Tiny.getInstance().source(b1).asBitmap().withOptions(options).compress(new BitmapCallback() {
         @Override
-        public void callback(boolean isSuccess, Bitmap bitmap) {
+        public void callback(boolean isSuccess, Bitmap bitmap, Throwable t) {
           if (isSuccess){
-            //                            Toast.makeText(PosActivity.this,"bitmap: "+bitmap.getByteCount(),Toast.LENGTH_LONG).show();
+            // Toast.makeText(PosActivity.this,"bitmap: "+bitmap.getByteCount(),Toast.LENGTH_LONG).show();
             b2=bitmap;
             b2=resizeImage(b2,width,false);
             Message message=new Message();

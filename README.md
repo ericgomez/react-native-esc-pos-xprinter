@@ -7,6 +7,10 @@ This is an Android Xprinter SDK driver.
 ```sh
 npm install react-native-esc-pos-xprinter
 ```
+or
+```sh
+yarn add react-native-esc-pos-xprinter
+```
 
 ## Usage
 
