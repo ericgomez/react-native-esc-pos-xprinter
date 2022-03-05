@@ -27,10 +27,35 @@ await RNXprinter.connectPrinter(printerList[0].address);
 After you connected to your printer, try this to make sure everything except yourself is worked perfectly.
 
 ```js
+const msg =`COMPANY NAME
+Folio: 1234-674
+Date: 2022-02-04, 16:15:00
+Name: JUAN PEREZ
+\nPayment to Loan\n
+Amortization No.: 24
+Equity: $150.00
+Interest: $35.00
+Moratorium: $0.00
+VAT: $20.00
+Total Due: $205.00
+\n ___________ ____________
+     Promoter     Client
+\n        Attended:
+         DIEGO TORRES
+   THIS PROOF WILL NOT BE VALID
+WITHOUT SIGNATURE OF THE REPRESENTATIVE
+P. SHERMAN, 42 WALLABY STREET, SYDNEY
+  
+       SPECIALIZED UNIT:
+   SUGGESTIONS@EXAMPLE.COM
+           PHONES:
+987654321 AND 987654321 EXT 608A
+          CUSTOMER\n\n`;
+
 // Push Text
 // text: string            # The string you want to print
 // size: number            # 0 ~ 7 Level
-RNXprinter.pushText("Hello World!!!", 0);
+RNXprinter.pushText(msg, 0);
 
 // Push Cut Paper
 RNXprinter.pushCutPaper();
@@ -43,7 +68,7 @@ Thermal printer is a kind of high speed printer, so we need push all things to t
 // Push Image
 // size: index             # The FLASH index of image
 // Currently only supported without download image, you need use your computer to help
-RNXprinter.pushFlashImage(0);
+RNXprinter.pushFlashImage(1);
 
 // Push Cut Paper
 RNXprinter.pushCutPaper();
