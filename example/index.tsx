@@ -21,7 +21,32 @@ const App = () => {
 
   const onPrinter = async () => {
     // print a text
-    RNXprinter.pushText('Hello World!!', 0);
+    const msg =`COMPANY NAME
+Folio: 1234-674
+Date: 2022-02-04, 16:15:00
+Name: JUAN PEREZ
+\nPayment to Loan\n
+Amortization No.: 24
+Equity: $150.00
+Interest: $35.00
+Moratorium: $0.00
+VAT: $20.00
+Total Due: $205.00
+\n ___________ ____________
+     Promoter     Client
+\n        Attended:
+         DIEGO TORRES
+   THIS PROOF WILL NOT BE VALID
+WITHOUT SIGNATURE OF THE REPRESENTATIVE
+P. SHERMAN, 42 WALLABY STREET, SYDNEY
+  
+       SPECIALIZED UNIT:
+   SUGGESTIONS@EXAMPLE.COM
+           PHONES:
+987654321 AND 987654321 EXT 608A
+          CUSTOMER\n\n`;
+
+    RNXprinter.pushText(msg, 0);
   };
 
   const onDisconnectPrinter = async () => {
