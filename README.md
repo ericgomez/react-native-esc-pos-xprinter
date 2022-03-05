@@ -66,7 +66,7 @@ Thermal printer is a kind of high speed printer, so we need push all things to t
 [Printer TEST V3.0C](https://www.youtube.com/watch?v=rbho0L0VqMQ&list=WL)
 ```js
 // Push Image
-// size: index             # The FLASH index of image
+// Image in buffer: index           # The FLASH index of image
 // Currently only supported without download image, you need use your computer to help
 RNXprinter.pushFlashImage(1);
 
